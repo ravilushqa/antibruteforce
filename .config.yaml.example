@@ -1,0 +1,4 @@
+environment: dev
+debug: true
+host: localhost
+port: 50051
