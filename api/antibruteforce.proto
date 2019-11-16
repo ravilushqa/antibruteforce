@@ -6,6 +6,7 @@ option go_package = "apipb";
 
 service AntiBruteforceService {
     rpc Check (CheckRequest) returns (CheckResponse) {}
+    rpc Reset (ResetRequest) returns (ResetResponse) {}
 }
 
 message CheckRequest {
@@ -15,5 +16,14 @@ message CheckRequest {
 }
 
 message CheckResponse {
+    bool ok = 1;
+}
+
+message ResetRequest {
+    string login = 1;
+    string ip = 2;
+}
+
+message ResetResponse {
     bool ok = 1;
 }
