@@ -28,18 +28,22 @@ func (s *server) Reset(ctx context.Context, req *apipb.ResetRequest) (*apipb.Res
 	return &apipb.ResetResponse{Ok: err == nil}, err
 }
 
-func (s *server) BlacklistAdd(context.Context, *apipb.BlacklistAddRequest) (*apipb.BlacklistAddResponse, error) {
-	panic("implement me")
+func (s *server) BlacklistAdd(ctx context.Context, req *apipb.BlacklistAddRequest) (*apipb.BlacklistAddResponse, error) {
+	err := s.usecase.BlacklistAdd(ctx, req.Subnet)
+	return &apipb.BlacklistAddResponse{Ok: err == nil}, err
 }
 
-func (s *server) BlacklistRemove(context.Context, *apipb.BlacklistRemoveRequest) (*apipb.BlacklistRemoveResponse, error) {
-	panic("implement me")
+func (s *server) BlacklistRemove(ctx context.Context, req *apipb.BlacklistRemoveRequest) (*apipb.BlacklistRemoveResponse, error) {
+	err := s.usecase.BlacklistRemove(ctx, req.Subnet)
+	return &apipb.BlacklistRemoveResponse{Ok: err == nil}, err
 }
 
-func (s *server) WhitelistAdd(context.Context, *apipb.WhitelistAddRequest) (*apipb.WhitelistAddResponse, error) {
-	panic("implement me")
+func (s *server) WhitelistAdd(ctx context.Context, req *apipb.WhitelistAddRequest) (*apipb.WhitelistAddResponse, error) {
+	err := s.usecase.WhitelistAdd(ctx, req.Subnet)
+	return &apipb.WhitelistAddResponse{Ok: err == nil}, err
 }
 
-func (s *server) WhitelistRemove(context.Context, *apipb.WhitelistRemoveRequest) (*apipb.WhitelistRemoveResponse, error) {
-	panic("implement me")
+func (s *server) WhitelistRemove(ctx context.Context, req *apipb.WhitelistRemoveRequest) (*apipb.WhitelistRemoveResponse, error) {
+	err := s.usecase.WhitelistRemove(ctx, req.Subnet)
+	return &apipb.WhitelistRemoveResponse{Ok: err == nil}, err
 }

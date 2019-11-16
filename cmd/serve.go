@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"gitlab.com/otus_golang/antibruteforce/config"
-	grpc2 "gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/delivery/grpc"
+	dbInstance "gitlab.com/otus_golang/antibruteforce/db"
+	grpcInstance "gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/delivery/grpc"
 	apipb "gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/repository"
 	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/usecase"
-	repository2 "gitlab.com/otus_golang/antibruteforce/internal/bucket/repository"
+	bucketRepository "gitlab.com/otus_golang/antibruteforce/internal/bucket/repository"
 	"gitlab.com/otus_golang/antibruteforce/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -35,6 +36,11 @@ var serve = &cobra.Command{
 			log.Fatalf("unable to load logger: %v", err)
 		}
 
+		db, err := dbInstance.GetDb(c)
+		if err != nil {
+			log.Fatalf("unable to load db: %v", err)
+		}
+
 		lis, err := net.Listen("tcp", c.Url)
 		if err != nil {
 			l.Fatal(fmt.Sprintf("failed to listen %v", err))
@@ -46,10 +52,10 @@ var serve = &cobra.Command{
 			reflection.Register(grpcServer)
 		}
 
-		r := repository.NewPsqlAntibruteforceRepository()
-		br := repository2.NewMemoryBucketRepository()
+		r := repository.NewPsqlAntibruteforceRepository(db)
+		br := bucketRepository.NewMemoryBucketRepository()
 		u := usecase.NewAntibruteforceUsecase(r, br, l, c)
-		apipb.RegisterAntiBruteforceServiceServer(grpcServer, grpc2.NewServer(u, l))
+		apipb.RegisterAntiBruteforceServiceServer(grpcServer, grpcInstance.NewServer(u, l))
 
 		err = grpcServer.Serve(lis)
 

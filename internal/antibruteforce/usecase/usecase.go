@@ -7,6 +7,7 @@ import (
 	"gitlab.com/otus_golang/antibruteforce/internal/bucket"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
+	"net"
 	"time"
 )
 
@@ -68,17 +69,45 @@ func (a *antibruteforceUsecase) Reset(ctx context.Context, login string, ip stri
 }
 
 func (a *antibruteforceUsecase) BlacklistAdd(ctx context.Context, subnet string) error {
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
+	defer cancel()
+
+	_, _, err := net.ParseCIDR(subnet)
+	if err != nil {
+		return err
+	}
+	return a.antibruteforceRepo.BlacklistAdd(ctx, subnet)
 }
 
 func (a *antibruteforceUsecase) BlacklistRemove(ctx context.Context, subnet string) error {
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
+	defer cancel()
+
+	_, _, err := net.ParseCIDR(subnet)
+	if err != nil {
+		return err
+	}
+	return a.antibruteforceRepo.BlacklistRemove(ctx, subnet)
 }
 
 func (a *antibruteforceUsecase) WhitelistAdd(ctx context.Context, subnet string) error {
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
+	defer cancel()
+
+	_, _, err := net.ParseCIDR(subnet)
+	if err != nil {
+		return err
+	}
+	return a.antibruteforceRepo.WhitelistAdd(ctx, subnet)
 }
 
 func (a *antibruteforceUsecase) WhitelistRemove(ctx context.Context, subnet string) error {
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
+	defer cancel()
+
+	_, _, err := net.ParseCIDR(subnet)
+	if err != nil {
+		return err
+	}
+	return a.antibruteforceRepo.WhitelistRemove(ctx, subnet)
 }

@@ -9,3 +9,9 @@ bucketPasswordapacity: 100
 bucketIpCapacity: 1000
 #context timeout in ms
 contextTimeout: 500
+db:
+  - user: myuser
+  - pass: mypass
+  - host: localhost
+  - port: 5432
+  - name: antibruteforce
