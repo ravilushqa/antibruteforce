@@ -12,7 +12,7 @@ type MemoryBucketRepository struct {
 }
 
 func NewMemoryBucketRepository() *MemoryBucketRepository {
-	return &MemoryBucketRepository{buckets: make(map[string]*models.Bucket)}
+	return &MemoryBucketRepository{buckets: make(map[string]*models.Bucket, 1024)}
 }
 
 func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity uint, rate time.Duration) error {
@@ -43,5 +43,17 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 
 	b.Remaining -= 1
 
+	return nil
+}
+
+func (r *MemoryBucketRepository) Reset(ctx context.Context, keys []string) error {
+	for _, key := range keys {
+		b, ok := r.buckets[key]
+		if !ok {
+			continue
+		}
+
+		b.Remaining = b.Capacity
+	}
 	return nil
 }

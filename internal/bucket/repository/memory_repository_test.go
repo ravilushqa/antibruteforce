@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
@@ -9,7 +10,7 @@ import (
 var memoryBucketRepository = NewMemoryBucketRepository()
 var rate = 100 * time.Millisecond
 
-func TestMemoryBucketRepository_Add(t *testing.T) {
+func TestMemoryBucketRepository(t *testing.T) {
 	type args struct {
 		ctx      context.Context
 		key      string
@@ -68,7 +69,7 @@ func TestMemoryBucketRepository_Add(t *testing.T) {
 		},
 		{
 			sleep: rate,
-			name:  "testing leaky bucket, third iteration, capacity 2",
+			name:  "testing leaky bucket, after time reset",
 			args: args{
 				ctx:      context.Background(),
 				key:      "test",
@@ -85,6 +86,39 @@ func TestMemoryBucketRepository_Add(t *testing.T) {
 
 			if err := memoryBucketRepository.Add(tt.args.ctx, tt.args.key, tt.args.capacity, tt.args.rate); (err != nil) != tt.wantErr {
 				t.Errorf("Add() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestMemoryBucketRepository_Reset(t *testing.T) {
+	type args struct {
+		ctx  context.Context
+		keys []string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "reset",
+			args: args{
+				ctx:  context.Background(),
+				keys: []string{"test", "undefined"},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := memoryBucketRepository.Reset(tt.args.ctx, tt.args.keys); (err != nil) != tt.wantErr {
+				t.Errorf("Reset() error = %v, wantErr %v", err, tt.wantErr)
+			}
+
+			for _, key := range tt.args.keys {
+				if _, ok := memoryBucketRepository.buckets[key]; ok {
+					assert.Equal(t, memoryBucketRepository.buckets[key].Capacity, memoryBucketRepository.buckets[key].Remaining)
+				}
 			}
 		})
 	}

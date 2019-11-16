@@ -24,3 +24,17 @@ func (_m *Repository) Add(ctx context.Context, key string, capacity uint, rate t
 
 	return r0
 }
+
+// Reset provides a mock function with given fields: ctx, keys
+func (_m *Repository) Reset(ctx context.Context, keys []string) error {
+	ret := _m.Called(ctx, keys)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, []string) error); ok {
+		r0 = rf(ctx, keys)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
