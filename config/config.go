@@ -10,8 +10,14 @@ import (
 type Config struct {
 	Environment string
 	Debug       bool
-	Host        string
-	Port        string
+	Url         string
+	// rate in seconds
+	BucketRate             uint
+	BucketLoginCapacity    uint
+	BucketPasswordCapacity uint
+	BucketIpCapacity       uint
+	// timeout in ms
+	ContextTimeout uint
 }
 
 func (c *Config) IsProduction() bool {

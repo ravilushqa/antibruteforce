@@ -1,4 +1,11 @@
+#possible values dev|test|production
 environment: dev
 debug: true
-host: localhost
-port: 50051
+url: :50051
+#bucket rate in seconds. default value 60
+bucketRate: 60
+bucketLoginCapacity: 10
+bucketPasswordapacity: 100
+bucketIpCapacity: 1000
+#context timeout in ms
+contextTimeout: 500
