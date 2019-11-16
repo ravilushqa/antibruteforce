@@ -10,6 +10,12 @@ import (
 	"time"
 )
 
+const (
+	LOGIN_PREFIX    = "login_"
+	PASSWORD_PREFIX = "password_"
+	IP_PREFIX       = "ip"
+)
+
 type antibruteforceUsecase struct {
 	antibruteforceRepo antibruteforce.Repository
 	bucketRepo         bucket.Repository
@@ -32,15 +38,15 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 		capacity uint
 	}{
 		{
-			login,
+			LOGIN_PREFIX + login,
 			a.config.BucketLoginCapacity,
 		},
 		{
-			password,
+			PASSWORD_PREFIX + password,
 			a.config.BucketPasswordCapacity,
 		},
 		{
-			ip,
+			IP_PREFIX + ip,
 			a.config.BucketIpCapacity,
 		},
 	}
@@ -55,7 +61,10 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 }
 
 func (a *antibruteforceUsecase) Reset(ctx context.Context, login string, ip string) error {
-	panic("implement me")
+	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
+	defer cancel()
+
+	return a.bucketRepo.Reset(ctx, []string{LOGIN_PREFIX + login, IP_PREFIX + ip})
 }
 
 func (a *antibruteforceUsecase) BlacklistAdd(ctx context.Context, subnet string) error {
