@@ -22,8 +22,10 @@ func (s *server) Check(ctx context.Context, req *apipb.CheckRequest) (*apipb.Che
 	return &apipb.CheckResponse{Ok: err == nil}, err
 }
 
-func (s *server) Reset(context.Context, *apipb.ResetRequest) (*apipb.ResetResponse, error) {
-	panic("implement me")
+func (s *server) Reset(ctx context.Context, req *apipb.ResetRequest) (*apipb.ResetResponse, error) {
+	err := s.usecase.Reset(ctx, req.Login, req.Ip)
+
+	return &apipb.ResetResponse{Ok: err == nil}, err
 }
 
 func (s *server) BlacklistAdd(context.Context, *apipb.BlacklistAddRequest) (*apipb.BlacklistAddResponse, error) {
