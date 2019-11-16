@@ -2,9 +2,7 @@ package antibruteforce
 
 import "context"
 
-type Usecase interface {
-	Check(ctx context.Context, login string, password string, ip string) error
-	Reset(ctx context.Context, login string, ip string) error
+type Repository interface {
 	BlacklistAdd(ctx context.Context, subnet string) error
 	BlacklistRemove(ctx context.Context, subnet string) error
 	WhitelistAdd(ctx context.Context, subnet string) error

@@ -7,6 +7,10 @@ option go_package = "apipb";
 service AntiBruteforceService {
     rpc Check (CheckRequest) returns (CheckResponse) {}
     rpc Reset (ResetRequest) returns (ResetResponse) {}
+    rpc BlacklistAdd (BlacklistAddRequest) returns (BlacklistAddResponse) {}
+    rpc BlacklistRemove (BlacklistRemoveRequest) returns (BlacklistRemoveResponse) {}
+    rpc WhitelistAdd (WhitelistAddRequest) returns (WhitelistAddResponse) {}
+    rpc WhitelistRemove (WhitelistRemoveRequest) returns (WhitelistRemoveResponse) {}
 }
 
 message CheckRequest {
@@ -25,5 +29,37 @@ message ResetRequest {
 }
 
 message ResetResponse {
+    bool ok = 1;
+}
+
+message BlacklistAddRequest {
+    string subnet = 1;
+}
+
+message BlacklistAddResponse {
+    bool ok = 1;
+}
+
+message BlacklistRemoveRequest {
+    string subnet = 1;
+}
+
+message BlacklistRemoveResponse {
+    bool ok = 1;
+}
+
+message WhitelistAddRequest {
+    string subnet = 1;
+}
+
+message WhitelistAddResponse {
+    bool ok = 1;
+}
+
+message WhitelistRemoveRequest {
+    string subnet = 1;
+}
+
+message WhitelistRemoveResponse {
     bool ok = 1;
 }
