@@ -4,11 +4,13 @@ import (
 	"context"
 	"gitlab.com/otus_golang/antibruteforce/internal/bucket/errors"
 	"gitlab.com/otus_golang/antibruteforce/models"
+	"sync"
 	"time"
 )
 
 type MemoryBucketRepository struct {
 	buckets map[string]*models.Bucket
+	mutex   sync.Mutex
 }
 
 func NewMemoryBucketRepository() *MemoryBucketRepository {
@@ -16,6 +18,7 @@ func NewMemoryBucketRepository() *MemoryBucketRepository {
 }
 
 func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity uint, rate time.Duration) error {
+	r.mutex.Lock()
 	b, ok := r.buckets[key]
 	if !ok {
 		b = &models.Bucket{
@@ -26,11 +29,10 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 		}
 		r.buckets[key] = b
 
+		r.mutex.Unlock()
 		return nil
 	}
-
-	b.Mutex.Lock()
-	defer b.Mutex.Unlock()
+	r.mutex.Unlock()
 
 	if time.Now().After(b.Reset) {
 		b.Reset = time.Now().Add(b.Rate)
