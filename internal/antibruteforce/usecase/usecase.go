@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"gitlab.com/otus_golang/antibruteforce/config"
 	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce"
 	"gitlab.com/otus_golang/antibruteforce/internal/bucket"
 	"go.uber.org/zap"
@@ -11,10 +12,11 @@ type antibruteforceUsecase struct {
 	antibruteforceRepo *antibruteforce.Repository
 	bucketRepo         *bucket.Repository
 	logger             *zap.Logger
+	config             *config.Config
 }
 
-func NewAntibruteforceUsecase(antibruteforceRepo *antibruteforce.Repository, bucketRepo *bucket.Repository, logger *zap.Logger) *antibruteforceUsecase {
-	return &antibruteforceUsecase{antibruteforceRepo: antibruteforceRepo, bucketRepo: bucketRepo, logger: logger}
+func NewAntibruteforceUsecase(antibruteforceRepo *antibruteforce.Repository, bucketRepo *bucket.Repository, logger *zap.Logger, config *config.Config) *antibruteforceUsecase {
+	return &antibruteforceUsecase{antibruteforceRepo: antibruteforceRepo, bucketRepo: bucketRepo, logger: logger, config: config}
 }
 
 func (a antibruteforceUsecase) Check(ctx context.Context, login string, password string, ip string) error {
