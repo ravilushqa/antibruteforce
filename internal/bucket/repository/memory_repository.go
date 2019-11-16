@@ -20,7 +20,7 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 	if !ok {
 		b = &models.Bucket{
 			Capacity:  capacity,
-			Remaining: capacity,
+			Remaining: capacity - 1,
 			Reset:     time.Now().Add(rate),
 			Rate:      rate,
 		}

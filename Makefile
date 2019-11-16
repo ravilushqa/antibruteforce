@@ -1,15 +1,11 @@
-fmt:
+.PHONY: precommit test-unit
+precommit:
 	gofmt -w -s -d .
-vet:
 	go vet .
-lint:
-	golint .
-tidy:
+	golangci-lint run
 	go mod tidy
-verify:
 	go mod verify
-imports:
-	goimports -w .
-precommit: fmt vet lint tidy verify imports
-build: gen-proto
-	go build main.go
+test-unit:
+	go test -race -cover ./...
+run:
+	go run -race main.go
