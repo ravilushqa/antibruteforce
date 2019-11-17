@@ -18,7 +18,9 @@ type Config struct {
 	BucketIpCapacity       uint
 	// timeout in ms
 	ContextTimeout uint
-	Db             map[string]string
+	// time in minutes
+	CleanStorageTimer uint
+	Db                map[string]string
 }
 
 func (c *Config) IsProduction() bool {

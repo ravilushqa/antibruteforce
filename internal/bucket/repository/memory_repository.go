@@ -59,3 +59,13 @@ func (r *MemoryBucketRepository) Reset(ctx context.Context, keys []string) error
 	}
 	return nil
 }
+
+func (r *MemoryBucketRepository) CleanStorage() error {
+	r.mutex.Lock()
+	for k := range r.buckets {
+		delete(r.buckets, k)
+	}
+	r.mutex.Unlock()
+
+	return nil
+}

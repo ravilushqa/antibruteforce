@@ -15,6 +15,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
+	"time"
 )
 
 func init() {
@@ -56,6 +57,20 @@ var serve = &cobra.Command{
 		br := bucketRepository.NewMemoryBucketRepository()
 		u := usecase.NewAntibruteforceUsecase(r, br, l, c)
 		apipb.RegisterAntiBruteforceServiceServer(grpcServer, grpcInstance.NewServer(u, l))
+
+		cleanTimer := c.CleanStorageTimer
+		if cleanTimer == 0 {
+			cleanTimer = 10
+		}
+		go func() {
+			for {
+				time.Sleep(time.Duration(cleanTimer) * time.Minute)
+				err := br.CleanStorage()
+				if err != nil {
+					l.Error(err.Error())
+				}
+			}
+		}()
 
 		err = grpcServer.Serve(lis)
 
