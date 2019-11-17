@@ -9,16 +9,10 @@ import (
 	"time"
 )
 
-var (
-	address string
-	login   string
-	ip      string
-)
-
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&address, "address", "a", "localhost:50051", "antibruteforce address")
-	rootCmd.PersistentFlags().StringVarP(&login, "login", "l", "", "login to reset")
-	rootCmd.PersistentFlags().StringVarP(&ip, "ip", "i", "", "ip to reset")
+	reset.PersistentFlags().StringVarP(&address, "address", "a", "localhost:50051", "antibruteforce address")
+	reset.PersistentFlags().StringVarP(&login, "login", "l", "", "login to reset")
+	reset.PersistentFlags().StringVarP(&ip, "ip", "i", "", "ip to reset")
 
 	rootCmd.AddCommand(reset)
 }

@@ -6,6 +6,13 @@ import (
 	"log"
 )
 
+var (
+	subnet  string
+	address string
+	login   string
+	ip      string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "antibruteforce",
 	Short: "antibruteforce service",
