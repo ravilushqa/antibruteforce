@@ -1,0 +1,19 @@
+#possible values dev|test|production
+environment: dev
+debug: true
+url: :50051
+#bucket rate in seconds. default value 60
+bucketRate: 60
+bucketLoginCapacity: 1
+bucketPasswordapacity: 100
+bucketIpCapacity: 1000
+#context timeout in ms
+contextTimeout: 500
+#clean storage timer in minutes
+cleanStorageTimer: 10
+db:
+  - user: myuser
+  - pass: mypass
+  - host: psql
+  - port: 5432
+  - name: antibruteforce
