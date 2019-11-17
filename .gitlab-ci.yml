@@ -10,11 +10,9 @@ cache:
   paths:
     - "$GOPATH/pkg/mod"
 
-
 variables:
   CI_IMAGE: "golangci/golangci-lint"
   GOMODULE: "on"
-
 
 golangci-lint:
   image: $CI_IMAGE
@@ -31,7 +29,6 @@ test:golang:
     - go mod vendor
     - make test-unit
 
-
 test:integration:
   image: docker
   services:
@@ -42,30 +39,3 @@ test:integration:
   stage: tests
   script:
     - make test-integration
-
-staging:
-  stage: deploy
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - dpl --provider=heroku --app=otus-ci-staging --api-key=$HEROKU_API_KEY
-  environment:
-    name: Staging
-    url: https://otus-ci-staging.herokuapp.com/
-  only:
-    - master
-
-production:
-  stage: deploy
-  script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-    - dpl --provider=heroku --app=otus-ci --api-key=$HEROKU_API_KEY
-  environment:
-    name: Production
-    url: https://otus-ci.herokuapp.com/
-  only:
-    - tags
-  when: manual
