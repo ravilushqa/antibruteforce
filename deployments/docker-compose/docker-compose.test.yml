@@ -1,0 +1,42 @@
+version: '3.7'
+
+services:
+  integration_tests:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/integration_test/Dockerfile
+    command: "true"
+    networks:
+      - db
+    environment:
+      GRPC_SERVICE: "antibruteforce:50051"
+    depends_on:
+      - antibruteforce
+  antibruteforce:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/antibruteforce/Dockerfile
+    ports:
+      - 50051:50051
+    volumes:
+      - ../../.config.test.yaml:/opt/antibruteforce/.config.yaml
+    networks:
+      - db
+    depends_on:
+      - psql
+    restart: on-failure
+  psql:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypass
+      - POSTGRES_DB=antibruteforce
+    ports:
+      - "54320:5432"
+    volumes:
+      - ../../db/migrations/001.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - db
+networks:
+  db:
+    driver: bridge

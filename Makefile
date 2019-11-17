@@ -1,4 +1,4 @@
-.PHONY: precommit test-unit gen-proto run
+.PHONY: precommit test-unit gen-proto run test up down restart
 
 DOCKER_COMPOSE_FILE ?= deployments/docker-compose/docker-compose.yml
 DOCKER_COMPOSE_TEST_FILE ?= deployments/docker-compose/docker-compose.test.yml
@@ -24,4 +24,13 @@ up:
 
 down:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} down
+
+restart: down up
+
+test: test-unit
+	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} up --build -d ;\
+	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} run integration_tests go test -tags=integration ./internal/integration-tests;\
+	test_status_code=$$? ;\
+	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} down ;\
+	exit $$test_status_code ;\
 
