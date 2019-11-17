@@ -1,6 +1,5 @@
 stages:
-  - lint
-  - tests
+  - check
 
 cache:
   key: "$CI_PROJECT_NAME"
@@ -14,26 +13,26 @@ variables:
 
 golangci-lint:
   image: $CI_IMAGE
-  stage: lint
+  stage: check
   script:
     - make precommit
 
-test:golang:
+test-golang:
   image: golang:1.13
-  stage: tests
+  stage: check
   script:
     - go env
     - go version
     - go mod vendor
     - make test-unit
 
-test:integration:
+test-integration:
   image: docker
   services:
     - docker:dind
   before_script:
     - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
     - pip install docker-compose
-  stage: tests
+  stage: check
   script:
     - make test-integration
