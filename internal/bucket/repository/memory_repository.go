@@ -39,7 +39,7 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 		b.Remaining = b.Capacity
 	}
 
-	if b.Remaining <= 0 {
+	if b.Remaining == 0 {
 		return errors.ErrBucketOverflow
 	}
 
