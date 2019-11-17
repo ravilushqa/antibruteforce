@@ -11,13 +11,13 @@ variables:
   CI_IMAGE: "golangci/golangci-lint"
   GOMODULE: "on"
 
-check:lint:
+check:lint:golang:
   image: $CI_IMAGE
   stage: check
   script:
     - make precommit
 
-check:test-golang:
+check:test:golang:
   image: golang:1.13
   stage: check
   script:
@@ -26,7 +26,7 @@ check:test-golang:
     - go mod vendor
     - make test-unit
 
-check:test-integration:
+.check:test:integration:
   image: docker
   services:
     - docker:dind
