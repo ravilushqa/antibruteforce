@@ -24,8 +24,8 @@ func init() {
 
 var serve = &cobra.Command{
 	Use:   "serve",
-	Short: "Start calendar server",
-	Long:  `Start grpc calendar server`,
+	Short: "Start antibruteforce server",
+	Long:  `Start grpc antibruteforce server`,
 	Run: func(cmd *cobra.Command, args []string) {
 		c, err := config.GetConfig()
 		if err != nil {
