@@ -75,7 +75,7 @@ var serve = &cobra.Command{
 		err = grpcServer.Serve(lis)
 
 		if err != nil {
-			log.Fatal(err)
+			l.Fatal(err.Error())
 		}
 	},
 }
