@@ -4,6 +4,8 @@ import (
 	"context"
 	"gitlab.com/otus_golang/antibruteforce/config"
 	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce"
+	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/consts"
+	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/errors"
 	"gitlab.com/otus_golang/antibruteforce/internal/bucket"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
@@ -31,6 +33,17 @@ func NewAntibruteforceUsecase(antibruteforceRepo antibruteforce.Repository, buck
 func (a *antibruteforceUsecase) Check(ctx context.Context, login string, password string, ip string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
+
+	list, err := a.antibruteforceRepo.FindIpInList(ctx, ip)
+	if err != nil {
+		return err
+	}
+	switch list {
+	case consts.Whitelist:
+		return nil
+	case consts.Blacklist:
+		return errors.ErrIpInBlackList
+	}
 
 	var g errgroup.Group
 

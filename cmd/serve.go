@@ -52,7 +52,7 @@ var serve = &cobra.Command{
 			reflection.Register(grpcServer)
 		}
 
-		r := repository.NewPsqlAntibruteforceRepository(db)
+		r := repository.NewPsqlAntibruteforceRepository(db, l)
 		br := bucketRepository.NewMemoryBucketRepository()
 		u := usecase.NewAntibruteforceUsecase(r, br, l, c)
 		apipb.RegisterAntiBruteforceServiceServer(grpcServer, grpcInstance.NewServer(u, l))
