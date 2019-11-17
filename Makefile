@@ -11,7 +11,7 @@ precommit:
 	go mod verify
 
 test-unit:
-	go test -race -cover ./...
+	go test -race -cover ./internal/bucket/...
 
 gen-proto:
 	 protoc -I. api/antibruteforce.proto --go_out=plugins=grpc:internal/antibruteforce/delivery/grpc
@@ -29,7 +29,7 @@ restart: down up
 
 test: test-unit
 	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} up --build -d ;\
-	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} run integration_tests go test -tags=integration ./internal/integration-tests;\
+	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} run integration_tests go test ./internal/integration-tests;\
 	test_status_code=$$? ;\
 	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} down ;\
 	exit $$test_status_code ;\
