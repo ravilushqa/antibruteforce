@@ -28,6 +28,18 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 
+	if login == "" {
+		return errors.ErrLoginRequired
+	}
+
+	if password == "" {
+		return errors.ErrPasswordRequired
+	}
+
+	if net.ParseIP(ip) == nil {
+		return errors.ErrWrongIp
+	}
+
 	list, err := a.antibruteforceRepo.FindIpInList(ctx, ip)
 	if err != nil {
 		return err
@@ -71,6 +83,14 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 func (a *antibruteforceUsecase) Reset(ctx context.Context, login string, ip string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
+
+	if login == "" {
+		return errors.ErrLoginRequired
+	}
+
+	if net.ParseIP(ip) == nil {
+		return errors.ErrWrongIp
+	}
 
 	return a.bucketRepo.Reset(ctx, []string{consts.LoginPrefix + login, consts.IpPrefix + ip})
 }
