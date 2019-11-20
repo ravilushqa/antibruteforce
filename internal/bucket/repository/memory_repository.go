@@ -3,18 +3,38 @@ package repository
 import (
 	"context"
 	"gitlab.com/otus_golang/antibruteforce/internal/bucket/errors"
-	"gitlab.com/otus_golang/antibruteforce/models"
+	"gitlab.com/otus_golang/antibruteforce/internal/bucket/models"
+	"go.uber.org/zap"
 	"sync"
 	"time"
 )
 
+// clean duration in seconds
+const cleanWaitDuration = 10
+
 type MemoryBucketRepository struct {
 	buckets map[string]*models.Bucket
 	mutex   sync.Mutex
+	l       *zap.Logger
 }
 
-func NewMemoryBucketRepository() *MemoryBucketRepository {
-	return &MemoryBucketRepository{buckets: make(map[string]*models.Bucket, 1024)}
+func NewMemoryBucketRepository(logger *zap.Logger) *MemoryBucketRepository {
+	m := &MemoryBucketRepository{buckets: make(map[string]*models.Bucket, 1024), l: logger}
+	m.initCleaner()
+	return m
+}
+
+func (r *MemoryBucketRepository) initCleaner() {
+	go func() {
+		for {
+			time.Sleep(time.Duration(cleanWaitDuration) * time.Minute)
+			err := r.CleanStorage()
+			if err != nil {
+				r.l.Error(err.Error())
+			}
+		}
+	}()
+
 }
 
 func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity uint, rate time.Duration) error {
