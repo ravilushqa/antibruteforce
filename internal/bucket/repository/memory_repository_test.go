@@ -3,11 +3,12 @@ package repository
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
+	"go.uber.org/zap"
 	"testing"
 	"time"
 )
 
-var memoryBucketRepository = NewMemoryBucketRepository()
+var memoryBucketRepository = NewMemoryBucketRepository(zap.NewNop())
 var rate = 100 * time.Millisecond
 
 func TestMemoryBucketRepository(t *testing.T) {
