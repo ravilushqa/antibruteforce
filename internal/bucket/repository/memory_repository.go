@@ -12,6 +12,7 @@ import (
 // clean duration in seconds
 const cleanWaitDuration = 10
 
+// MemoryBucketRepository is implementation of bucket repository interface
 type MemoryBucketRepository struct {
 	buckets map[string]*models.Bucket
 	mutex   sync.Mutex
@@ -37,6 +38,7 @@ func (r *MemoryBucketRepository) initCleaner() {
 
 }
 
+// Add method is adding value to bucket, or creating it if its not created yet
 func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity uint, rate time.Duration) error {
 	r.mutex.Lock()
 	b, ok := r.buckets[key]
@@ -63,11 +65,12 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 		return errors.ErrBucketOverflow
 	}
 
-	b.Remaining -= 1
+	b.Remaining--
 
 	return nil
 }
 
+// Reset method resets buckets by keys
 func (r *MemoryBucketRepository) Reset(ctx context.Context, keys []string) error {
 	for _, key := range keys {
 		b, ok := r.buckets[key]
@@ -80,6 +83,7 @@ func (r *MemoryBucketRepository) Reset(ctx context.Context, keys []string) error
 	return nil
 }
 
+// CleanStorage us hard cleaning bucket storage
 func (r *MemoryBucketRepository) CleanStorage() error {
 	r.mutex.Lock()
 	for k := range r.buckets {

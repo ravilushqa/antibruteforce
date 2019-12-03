@@ -13,18 +13,21 @@ import (
 	"time"
 )
 
-type antibruteforceUsecase struct {
+// AntibruteforceUsecase implements antibruteforce usecase
+type AntibruteforceUsecase struct {
 	antibruteforceRepo antibruteforce.Repository
 	bucketRepo         bucket.Repository
 	logger             *zap.Logger
 	config             *config.Config
 }
 
-func NewAntibruteforceUsecase(antibruteforceRepo antibruteforce.Repository, bucketRepo bucket.Repository, logger *zap.Logger, config *config.Config) *antibruteforceUsecase {
-	return &antibruteforceUsecase{antibruteforceRepo: antibruteforceRepo, bucketRepo: bucketRepo, logger: logger, config: config}
+// NewAntibruteforceUsecase Constructor for AntibruteforceUsecase
+func NewAntibruteforceUsecase(antibruteforceRepo antibruteforce.Repository, bucketRepo bucket.Repository, logger *zap.Logger, config *config.Config) *AntibruteforceUsecase {
+	return &AntibruteforceUsecase{antibruteforceRepo: antibruteforceRepo, bucketRepo: bucketRepo, logger: logger, config: config}
 }
 
-func (a *antibruteforceUsecase) Check(ctx context.Context, login string, password string, ip string) error {
+// Check method Checking that requester is able to send request.
+func (a *AntibruteforceUsecase) Check(ctx context.Context, login string, password string, ip string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 
@@ -37,10 +40,10 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 	}
 
 	if net.ParseIP(ip) == nil {
-		return errors.ErrWrongIp
+		return errors.ErrWrongIP
 	}
 
-	list, err := a.antibruteforceRepo.FindIpInList(ctx, ip)
+	list, err := a.antibruteforceRepo.FindIPInList(ctx, ip)
 	if err != nil {
 		return err
 	}
@@ -48,7 +51,7 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 	case consts.Whitelist:
 		return nil
 	case consts.Blacklist:
-		return errors.ErrIpInBlackList
+		return errors.ErrIPInBlackList
 	}
 
 	var g errgroup.Group
@@ -66,8 +69,8 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 			a.config.BucketPasswordCapacity,
 		},
 		{
-			consts.IpPrefix + ip,
-			a.config.BucketIpCapacity,
+			consts.IPPrefix + ip,
+			a.config.BucketIPCapacity,
 		},
 	}
 	for _, add := range adds {
@@ -80,7 +83,8 @@ func (a *antibruteforceUsecase) Check(ctx context.Context, login string, passwor
 	return g.Wait()
 }
 
-func (a *antibruteforceUsecase) Reset(ctx context.Context, login string, ip string) error {
+// Reset method is resets visitor buckets
+func (a *AntibruteforceUsecase) Reset(ctx context.Context, login string, ip string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 
@@ -89,13 +93,14 @@ func (a *antibruteforceUsecase) Reset(ctx context.Context, login string, ip stri
 	}
 
 	if net.ParseIP(ip) == nil {
-		return errors.ErrWrongIp
+		return errors.ErrWrongIP
 	}
 
-	return a.bucketRepo.Reset(ctx, []string{consts.LoginPrefix + login, consts.IpPrefix + ip})
+	return a.bucketRepo.Reset(ctx, []string{consts.LoginPrefix + login, consts.IPPrefix + ip})
 }
 
-func (a *antibruteforceUsecase) BlacklistAdd(ctx context.Context, subnet string) error {
+// BlacklistAdd method adding subnet to blacklist
+func (a *AntibruteforceUsecase) BlacklistAdd(ctx context.Context, subnet string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 
@@ -106,7 +111,8 @@ func (a *antibruteforceUsecase) BlacklistAdd(ctx context.Context, subnet string)
 	return a.antibruteforceRepo.BlacklistAdd(ctx, subnet)
 }
 
-func (a *antibruteforceUsecase) BlacklistRemove(ctx context.Context, subnet string) error {
+// BlacklistRemove method removing subnet from blacklist
+func (a *AntibruteforceUsecase) BlacklistRemove(ctx context.Context, subnet string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 
@@ -117,7 +123,8 @@ func (a *antibruteforceUsecase) BlacklistRemove(ctx context.Context, subnet stri
 	return a.antibruteforceRepo.BlacklistRemove(ctx, subnet)
 }
 
-func (a *antibruteforceUsecase) WhitelistAdd(ctx context.Context, subnet string) error {
+// WhitelistAdd method adding subnet to whitelist
+func (a *AntibruteforceUsecase) WhitelistAdd(ctx context.Context, subnet string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 
@@ -128,7 +135,8 @@ func (a *antibruteforceUsecase) WhitelistAdd(ctx context.Context, subnet string)
 	return a.antibruteforceRepo.WhitelistAdd(ctx, subnet)
 }
 
-func (a *antibruteforceUsecase) WhitelistRemove(ctx context.Context, subnet string) error {
+// WhitelistRemove method removing subnet from whitelist
+func (a *AntibruteforceUsecase) WhitelistRemove(ctx context.Context, subnet string) error {
 	ctx, cancel := context.WithTimeout(ctx, time.Duration(a.config.ContextTimeout)*time.Millisecond)
 	defer cancel()
 

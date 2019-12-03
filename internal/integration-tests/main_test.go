@@ -1,4 +1,4 @@
-package integration_tests
+package tests
 
 import (
 	"github.com/DATA-DOG/godog"

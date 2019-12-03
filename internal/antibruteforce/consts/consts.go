@@ -1,9 +1,14 @@
 package consts
 
 const (
-	LoginPrefix    = "login_"
+	// LoginPrefix is prefix for login key in bucket
+	LoginPrefix = "login_"
+	// PasswordPrefix is prefix for password key in bucket
 	PasswordPrefix = "password_"
-	IpPrefix       = "ip"
-	Whitelist      = "whitelist"
-	Blacklist      = "blacklist"
+	// IPPrefix is prefix for ip key in bucket
+	IPPrefix = "ip"
+	// Whitelist is keyword for mysql query for checking that ip in whitelist
+	Whitelist = "whitelist"
+	// Blacklist is keyword for mysql query for checking that ip in blacklist
+	Blacklist = "blacklist"
 )
