@@ -19,6 +19,7 @@ type MemoryBucketRepository struct {
 	l       *zap.Logger
 }
 
+// NewMemoryBucketRepository constructor for MemoryBucketRepository
 func NewMemoryBucketRepository(logger *zap.Logger) *MemoryBucketRepository {
 	m := &MemoryBucketRepository{buckets: make(map[string]*models.Bucket, 1024), l: logger}
 	m.initCleaner()
