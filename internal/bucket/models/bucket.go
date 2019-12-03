@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// Bucket model that contain attributes for implementing leaky bucket
 type Bucket struct {
 	Capacity  uint
 	Remaining uint

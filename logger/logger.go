@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// GetLogger returns application logger instance
 func GetLogger(cfg *config.Config) (*zap.Logger, error) {
 	var err error
 	var l *zap.Logger

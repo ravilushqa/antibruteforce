@@ -22,6 +22,7 @@ var rootCmd = &cobra.Command{
 	},
 }
 
+// Execute is starting application
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatalf("root execute error: %v", err)

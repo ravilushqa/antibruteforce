@@ -41,11 +41,11 @@ var serve = &cobra.Command{
 			log.Fatalf("unable to load db: %v", err)
 		}
 
-		lis, err := net.Listen("tcp", c.Url)
+		lis, err := net.Listen("tcp", c.URL)
 		if err != nil {
 			l.Fatal(fmt.Sprintf("failed to listen %v", err))
 		}
-		l.Info("server has started at " + c.Url)
+		l.Info("server has started at " + c.URL)
 		grpcServer := grpc.NewServer()
 
 		if c.IsDevelopment() {
