@@ -20,6 +20,7 @@ type Config struct {
 	// timeout in ms
 	ContextTimeout uint
 	Db             map[string]string
+	PrometheusHost string
 }
 
 // IsProduction checks that application in production mode

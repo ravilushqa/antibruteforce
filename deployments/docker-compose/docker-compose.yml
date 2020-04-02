@@ -7,10 +7,12 @@ services:
       dockerfile: deployments/docker/antibruteforce/Dockerfile
     ports:
       - 50051:50051
+      - 9091:9091 #for prometheus
     volumes:
       - ../../.config.docker.yaml:/opt/antibruteforce/.config.yaml
     networks:
       - db
+      - monitoring
     depends_on:
       - psql
     restart: on-failure
@@ -26,6 +28,32 @@ services:
       - ../../db/migrations/001.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - db
+  prometheus:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/prometheus/Dockerfile
+      network: host
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring
+  postgres-exporter:
+    build:
+      context: ../..
+      dockerfile: deployments/docker/postgres-exporter/Dockerfile
+      network: host
+    environment:
+      DATA_SOURCE_NAME: "postgres://myuser:mypass@psql:5432/antibruteforce?sslmode=disable"
+      PG_EXPORTER_DISABLE_DEFAULT_METRICS: "false"
+      PG_EXPORTER_DISABLE_SETTINGS_METRICS: "false"
+      PG_EXPORTER_EXTEND_QUERY_PATH: "./config/queries.yml"
+    networks:
+      - monitoring
+      - db
+    depends_on:
+      - psql
 networks:
   db:
+    driver: bridge
+  monitoring:
     driver: bridge
