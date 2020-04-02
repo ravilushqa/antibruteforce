@@ -6,7 +6,7 @@ DOCKER_COMPOSE_TEST_FILE ?= deployments/docker-compose/docker-compose.test.yml
 precommit:
 	gofmt -w -s -d .
 	go vet .
-	golangci-lint run
+	golangci-lint run --timeout=30m
 	go mod tidy
 	go mod verify
 
