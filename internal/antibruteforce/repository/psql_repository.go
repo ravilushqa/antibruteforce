@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/consts"
+	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/consts"
 	"go.uber.org/zap"
 )
 

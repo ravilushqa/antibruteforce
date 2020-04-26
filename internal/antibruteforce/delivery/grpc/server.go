@@ -2,8 +2,8 @@ package grpc
 
 import (
 	"context"
-	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce"
-	apipb "gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/delivery/grpc/api"
+	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce"
+	apipb "gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"go.uber.org/zap"
 )
 

@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"gitlab.com/otus_golang/antibruteforce/config"
+	"gitlab.com/ravilushqa/antibruteforce/config"
 	"go.uber.org/zap"
 )
 

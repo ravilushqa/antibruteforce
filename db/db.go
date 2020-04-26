@@ -2,7 +2,7 @@ package db
 
 import (
 	"fmt"
-	"gitlab.com/otus_golang/antibruteforce/config"
+	"gitlab.com/ravilushqa/antibruteforce/config"
 
 	"github.com/jmoiron/sqlx"
 )

@@ -1,4 +1,4 @@
-module gitlab.com/otus_golang/antibruteforce
+module gitlab.com/ravilushqa/antibruteforce
 
 go 1.13
 

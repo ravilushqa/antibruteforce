@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"gitlab.com/otus_golang/antibruteforce/internal/bucket/errors"
-	"gitlab.com/otus_golang/antibruteforce/internal/bucket/models"
+	"gitlab.com/ravilushqa/antibruteforce/internal/bucket/errors"
+	"gitlab.com/ravilushqa/antibruteforce/internal/bucket/models"
 	"go.uber.org/zap"
 	"sync"
 	"time"
