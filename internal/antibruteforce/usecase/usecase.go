@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"context"
-	"gitlab.com/otus_golang/antibruteforce/config"
-	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce"
-	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/consts"
-	"gitlab.com/otus_golang/antibruteforce/internal/antibruteforce/errors"
-	"gitlab.com/otus_golang/antibruteforce/internal/bucket"
+	"gitlab.com/ravilushqa/antibruteforce/config"
+	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce"
+	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/consts"
+	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/errors"
+	"gitlab.com/ravilushqa/antibruteforce/internal/bucket"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 	"net"
