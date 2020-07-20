@@ -1,4 +1,4 @@
-module gitlab.com/ravilushqa/antibruteforce
+module github.com/ravilushqa/antibruteforce
 
 go 1.13
 

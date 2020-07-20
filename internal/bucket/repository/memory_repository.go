@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
-	"gitlab.com/ravilushqa/antibruteforce/internal/bucket/errors"
-	"gitlab.com/ravilushqa/antibruteforce/internal/bucket/models"
+	"github.com/ravilushqa/antibruteforce/internal/bucket/errors"
+	"github.com/ravilushqa/antibruteforce/internal/bucket/models"
 	"go.uber.org/zap"
 	"sync"
 	"time"

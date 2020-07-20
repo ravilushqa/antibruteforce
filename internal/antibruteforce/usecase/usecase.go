@@ -2,11 +2,11 @@ package usecase
 
 import (
 	"context"
-	"gitlab.com/ravilushqa/antibruteforce/config"
-	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce"
-	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/consts"
-	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/errors"
-	"gitlab.com/ravilushqa/antibruteforce/internal/bucket"
+	"github.com/ravilushqa/antibruteforce/config"
+	"github.com/ravilushqa/antibruteforce/internal/antibruteforce"
+	"github.com/ravilushqa/antibruteforce/internal/antibruteforce/consts"
+	"github.com/ravilushqa/antibruteforce/internal/antibruteforce/errors"
+	"github.com/ravilushqa/antibruteforce/internal/bucket"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 	"net"

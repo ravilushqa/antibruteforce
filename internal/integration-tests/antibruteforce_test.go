@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/DATA-DOG/godog"
-	apipb "gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
+	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"google.golang.org/grpc"
 	"os"
 	"time"

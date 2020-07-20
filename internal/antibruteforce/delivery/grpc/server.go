@@ -2,8 +2,8 @@ package grpc
 
 import (
 	"context"
-	"gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce"
-	apipb "gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
+	"github.com/ravilushqa/antibruteforce/internal/antibruteforce"
+	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"go.uber.org/zap"
 )
 

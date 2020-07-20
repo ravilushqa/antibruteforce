@@ -2,7 +2,7 @@ package db
 
 import (
 	"fmt"
-	"gitlab.com/ravilushqa/antibruteforce/config"
+	"github.com/ravilushqa/antibruteforce/config"
 
 	"github.com/jmoiron/sqlx"
 )

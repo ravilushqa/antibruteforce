@@ -3,8 +3,8 @@ package cmd
 import (
 	"context"
 	"fmt"
+	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"github.com/spf13/cobra"
-	apipb "gitlab.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"google.golang.org/grpc"
 	"log"
 	"time"

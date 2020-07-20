@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"gitlab.com/ravilushqa/antibruteforce/config"
+	"github.com/ravilushqa/antibruteforce/config"
 	"go.uber.org/zap"
 )
 
