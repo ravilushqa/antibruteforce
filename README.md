@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/ravilushqa/antibruteforce)](https://goreportcard.com/report/github.com/ravilushqa/antibruteforce)
+
 # сервис "Анти-брутфорс"
 
 ## Общее описание
