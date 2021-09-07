@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/DATA-DOG/godog"
-	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
-	"google.golang.org/grpc"
 	"os"
 	"time"
+
+	"github.com/cucumber/godog"
+	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
+	"google.golang.org/grpc"
 )
 
 var grpcService = os.Getenv("GRPC_SERVICE")
@@ -88,19 +89,22 @@ func (a *apiTest) responseErrorShouldBe(error string) error {
 	return nil
 }
 
-func FeatureContext(s *godog.Suite) {
+func InitializeScenario(ctx *godog.ScenarioContext) {
 	var test apiTest
-	s.BeforeScenario(func(i interface{}) {
+	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		test.login = ""
 		test.password = ""
 		test.ip = ""
 		test.responseError = nil
-	})
-	s.Step(`^login is "([^"]*)"$`, test.loginIs)
-	s.Step(`^password is "([^"]*)"$`, test.passwordIs)
-	s.Step(`^ip is "([^"]*)"$`, test.ipIs)
-	s.Step(`^subnet is "([^"]*)"$`, test.subnetIs)
 
-	s.Step(`^I call grpc method "([^"]*)"$`, test.iCallGrpcMethod)
-	s.Step(`^response error should be "([^"]*)"$`, test.responseErrorShouldBe)
+		return ctx, nil
+	})
+
+	ctx.Step(`^login is "([^"]*)"$`, test.loginIs)
+	ctx.Step(`^password is "([^"]*)"$`, test.passwordIs)
+	ctx.Step(`^ip is "([^"]*)"$`, test.ipIs)
+	ctx.Step(`^subnet is "([^"]*)"$`, test.subnetIs)
+
+	ctx.Step(`^I call grpc method "([^"]*)"$`, test.iCallGrpcMethod)
+	ctx.Step(`^response error should be "([^"]*)"$`, test.responseErrorShouldBe)
 }
