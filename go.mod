@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/DATA-DOG/godog v0.7.13
 	github.com/cockroachdb/apd v1.1.0 // indirect
-	github.com/gofrs/uuid v3.2.0+incompatible // indirect
+	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
@@ -13,14 +13,17 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jnewmano/grpc-json-proxy v0.0.3
-	github.com/lib/pq v1.0.0
+	github.com/lib/pq v1.10.2
 	github.com/prometheus/client_golang v0.9.4
-	github.com/shopspring/decimal v0.0.0-20191009025716-f1972eb1d1f5 // indirect
+	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1
+	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/stretchr/testify v1.7.0
 	go.uber.org/automaxprocs v1.3.0
 	go.uber.org/zap v1.17.0
+	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
+	golang.org/x/text v0.3.6 // indirect
 	google.golang.org/grpc v1.38.0
 )
