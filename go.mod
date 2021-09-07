@@ -3,7 +3,7 @@ module github.com/ravilushqa/antibruteforce
 go 1.13
 
 require (
-	github.com/DATA-DOG/godog v0.7.13
+	github.com/DATA-DOG/godog v0.12.1
 	github.com/cockroachdb/apd v1.1.0 // indirect
 	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2
