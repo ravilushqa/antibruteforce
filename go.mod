@@ -1,11 +1,10 @@
 module github.com/ravilushqa/antibruteforce
 
-go 1.13
+go 1.16
 
 require (
-	github.com/DATA-DOG/godog v0.7.13
 	github.com/cockroachdb/apd v1.1.0 // indirect
-	github.com/gofrs/uuid v4.0.0+incompatible // indirect
+	github.com/cucumber/godog v0.12.1
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
