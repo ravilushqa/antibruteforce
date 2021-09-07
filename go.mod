@@ -13,7 +13,7 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/jnewmano/grpc-json-proxy v0.0.3
-	github.com/lib/pq v1.10.2
+	github.com/lib/pq v1.10.3
 	github.com/prometheus/client_golang v0.9.4
 	github.com/shopspring/decimal v1.2.0 // indirect
 	github.com/spf13/cobra v1.2.1
