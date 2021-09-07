@@ -16,7 +16,7 @@ require (
 	github.com/lib/pq v1.0.0
 	github.com/prometheus/client_golang v0.9.4
 	github.com/shopspring/decimal v0.0.0-20191009025716-f1972eb1d1f5 // indirect
-	github.com/spf13/cobra v0.0.5
+	github.com/spf13/cobra v0.0.7
 	github.com/spf13/viper v1.4.0
 	github.com/stretchr/testify v1.5.1
 	go.uber.org/automaxprocs v1.3.0
