@@ -11,7 +11,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
 	github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 // indirect
 	github.com/jackc/pgx v3.6.2+incompatible
-	github.com/jmoiron/sqlx v1.2.0
+	github.com/jmoiron/sqlx v1.3.4
 	github.com/jnewmano/grpc-json-proxy v0.0.3
 	github.com/lib/pq v1.10.3
 	github.com/prometheus/client_golang v1.11.0
