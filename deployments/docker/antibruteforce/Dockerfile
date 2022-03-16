@@ -1,4 +1,4 @@
-FROM golang:1.17 as build-env
+FROM golang:1.18 as build-env
 ENV NAME "antibruteforce"
 WORKDIR /opt/${NAME}
 COPY go.mod .
