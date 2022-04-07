@@ -10,7 +10,7 @@ require (
 	github.com/jackc/pgx/v4 v4.15.0
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/jnewmano/grpc-json-proxy v0.0.4
-	github.com/lib/pq v1.10.4
+	github.com/lib/pq v1.10.5
 	github.com/prometheus/client_golang v1.12.1
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.10.0
