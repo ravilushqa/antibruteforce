@@ -3,7 +3,7 @@ module github.com/ravilushqa/antibruteforce
 go 1.16
 
 require (
-	github.com/cucumber/godog v0.12.4
+	github.com/cucumber/godog v0.12.5
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
