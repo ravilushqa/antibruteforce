@@ -12,7 +12,7 @@ require (
 	github.com/jnewmano/grpc-json-proxy v0.0.4
 	github.com/lib/pq v1.10.6
 	github.com/prometheus/client_golang v1.12.2
-	github.com/spf13/cobra v1.4.0
+	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.10.0
 	github.com/stretchr/testify v1.7.4
 	go.uber.org/automaxprocs v1.5.1
