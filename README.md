@@ -1,74 +1,72 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/ravilushqa/antibruteforce)](https://goreportcard.com/report/github.com/ravilushqa/antibruteforce)
+# Anti-bruteforce service
 
-# сервис "Анти-брутфорс"
+## General description
 
-## Общее описание
+The service is designed to combat the selection of passwords when logging in to any system.
+The service is called before user authorization and can either allow or block the attempt.
+It is assumed that the service is used only for server-server, i.e. hidden from the end user.
 
-Сервис предназначен для борьбы с подбором паролей при авторизации в какой-либо системе.
-Сервис вызывается перед авторизацией пользователя и может либо разрешить, либо заблокировать попытку.
-Предполагается, что сервис используется только для server-server, т.е. скрыт от конечного пользователя.
+## Algorithm of operation
 
-## Алгоритм работы
+The service limits the frequency of authorization attempts for various combinations of parameters, for example:
+* no more than N = 10 attempts per minute for this login.
+* no more than M = 100 attempts per minute for this password (reverse brute-force protection).
+* no more than K = 1000 attempts per minute for this IP (the number is large, because NAT).
 
-Сервис ограничивает частоту попыток авторизации для различных комбинаций параметров, например:
-* не более N = 10 попыток в минуту для данного логина.
-* не более M = 100 попыток в минуту для данного пароля (защита от обратного brute-force).
-* не более K = 1000 попыток в минуту для данного IP (число большое, т.к. NAT).
+White/black sheets contain lists of network addresses that are processed in a simpler way.
+If the incoming ip is in the whitelist, the service definitely allows authorization (ok=true), if it is in the blacklist, it rejects it (ok=false).
 
-White/black листы содержат списки адресов сетей, которые обрабатываются более простым способом.
-Если входящий ip в whitelist - сервис безусловно разрешает авторизацию (ok=true), если в blacklist - отклоняет (ok=false).
+## Architecture
 
-## Архитектура
+The microservice consists of an API, a database for storing settings and black/white lists.
 
-Микросервис состоит из API, базы данных для хранения настроек и black/white списков.
+## Description of API methods
 
-## Описание методов API
-
-### Попытка авторизации
-Запрос:
+### Authorization attempt
+Request:
 * login
 * password
 * ip
 
-Ответ:
-* ok (true/false) - сервис должен возвращать ok=true, если считает что запрос нормальный 
-                    и ok=false, если считает что происходит bruteforce.
+Answer:
+* ok (true/false) - the service should return ok=true if it considers that the request is normal
+  and ok=false if he thinks bruteforce is going on.
 
-### Сброс bucket
+### Reset bucket
 * login
 * ip
 
-Должен очистить bucket-ы соответствующие переданным login и ip
+Must clear the buckets corresponding to the transmitted login and ip
 
-### Добавление IP в blacklist
+### Adding IP to blacklist
 * subnet (ip + mask)
 
-### Удаление IP из blacklist
+### Removing IP from blacklist
 * subnet (ip + mask)
 
-### Добавление IP в whitelist
+### Adding IP to whitelist
 * subnet (ip + mask)
 
-### Удаление IP из whitelist
+### Removing IP from whitelist
 * subnet (ip + mask)
 
-## Конфигурация
-Основные параметры конфигурации: N, M, K - лимиты по достижению которых, сервис считает попытку брутфорсом.
+## Configuration
+The main configuration parameters: N, M, K are the limits for reaching which the service considers an attempt to be a brute force.
 
-## Command-Line интерфейс
-Разработан command-line интерфейс для ручного администрирования сервиса.
-Через CLI есть возможность вызвать сброс бакета и управлять whitelist/blacklist-ом.
-CLI работает через GRPC интерфейс.
+## Command-Line interface
+Developed a command-line interface for manual administration of the service.
+Through the CLI, it is possible to cause a bucket reset and manage the whitelist/blacklist.
+The CLI works through the GRPC interface.
 
-## Развертывание
-Перед развертыванием необходимо добавить файл `.config.yaml` в директорию с проектом. Пример файла `.config.yaml.example`  
-Развертывание микросервиса осуществляеться командой `make up` в директории с проектом.
+## Deployment
+Before deployment, you need to add the `.config.yaml` file to the project directory. Example file `.config.yaml.example`
+The deployment of the microservice is carried out by the `make up` command in the directory with the project.
 
-## Тестирование
-Проект содержит unit тесты реализации leaky-bucket и интеграционные тесты для методов API.  
-Развертывание микросервиса осуществляеться командой `make test` в директории с проектом.
+## Testing
+The project contains unit tests of leaky-bucket implementation and integration tests for API methods.
+The deployment of the microservice is carried out by the 'make test` command in the directory with the project.
 
-## Мониторинг
-При запуске сборки в докере поднимается prometheus
-Что бы зайти в prometheus нужно пройти по ссылке: http://localhost:9090  
-Посмотреть статус: http://localhost:9090/targets
+## Monitoring
+When you start the build in the docker, prometheus rises
+To enter prometheus, you need to follow the link: http://localhost:9090
+View the status: http://localhost:9090/targets
