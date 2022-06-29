@@ -13,10 +13,10 @@ require (
 	github.com/lib/pq v1.10.6
 	github.com/prometheus/client_golang v1.12.2
 	github.com/spf13/cobra v1.5.0
-	github.com/spf13/viper v1.10.0
+	github.com/spf13/viper v1.12.0
 	github.com/stretchr/testify v1.8.0
 	go.uber.org/automaxprocs v1.5.1
 	go.uber.org/zap v1.21.0
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f
-	google.golang.org/grpc v1.42.0
+	google.golang.org/grpc v1.46.2
 )
