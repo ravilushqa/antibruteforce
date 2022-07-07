@@ -8,8 +8,10 @@ import (
 	"time"
 
 	"github.com/cucumber/godog"
-	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+
+	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 )
 
 var grpcService = os.Getenv("GRPC_SERVICE")
@@ -21,7 +23,7 @@ func init() {
 }
 
 func (a *apiTest) iCallGrpcMethod(method string) (err error) {
-	cc, err := grpc.Dial(grpcService, grpc.WithInsecure())
+	cc, err := grpc.Dial(grpcService, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return fmt.Errorf("could not connect: %v", err)
 	}

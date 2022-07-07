@@ -2,11 +2,14 @@ package cmd
 
 import (
 	"context"
-	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
-	"github.com/spf13/cobra"
-	"google.golang.org/grpc"
 	"log"
 	"time"
+
+	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+
+	apipb "github.com/ravilushqa/antibruteforce/internal/antibruteforce/delivery/grpc/api"
 )
 
 func init() {
@@ -22,7 +25,7 @@ var reset = &cobra.Command{
 	Short: "Reset bucket",
 	Long:  `Reset bucket`,
 	Run: func(cmd *cobra.Command, args []string) {
-		conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
+		conn, err := grpc.Dial(address, grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 		if err != nil {
 			log.Fatalf("did not connect: %v", err)
 		}
