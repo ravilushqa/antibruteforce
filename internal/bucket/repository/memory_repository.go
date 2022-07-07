@@ -2,15 +2,15 @@ package repository
 
 import (
 	"context"
+	"sync"
+	"sync/atomic"
+	"time"
+
+	"go.uber.org/zap"
+
 	"github.com/ravilushqa/antibruteforce/internal/bucket/errors"
 	"github.com/ravilushqa/antibruteforce/internal/bucket/models"
-	"go.uber.org/zap"
-	"sync"
-	"time"
 )
-
-// clean duration in seconds
-const cleanWaitDuration = 10
 
 // MemoryBucketRepository is implementation of bucket repository interface
 type MemoryBucketRepository struct {
@@ -22,21 +22,7 @@ type MemoryBucketRepository struct {
 // NewMemoryBucketRepository constructor for MemoryBucketRepository
 func NewMemoryBucketRepository(logger *zap.Logger) *MemoryBucketRepository {
 	m := &MemoryBucketRepository{buckets: make(map[string]*models.Bucket, 1024), l: logger}
-	m.initCleaner()
 	return m
-}
-
-func (r *MemoryBucketRepository) initCleaner() {
-	go func() {
-		for {
-			time.Sleep(time.Duration(cleanWaitDuration) * time.Minute)
-			err := r.CleanStorage()
-			if err != nil {
-				r.l.Error(err.Error())
-			}
-		}
-	}()
-
 }
 
 // Add method is adding value to bucket, or creating it if its not created yet
@@ -44,12 +30,12 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 	r.mutex.Lock()
 	b, ok := r.buckets[key]
 	if !ok {
-		b = &models.Bucket{
-			Capacity:  capacity,
-			Remaining: capacity - 1,
-			Reset:     time.Now().Add(rate),
-			Rate:      rate,
-		}
+		b = &models.Bucket{Capacity: capacity}
+		atomic.AddInt32(&b.Remaining, int32(capacity-1))
+		go func() {
+			time.Sleep(rate)
+			atomic.AddInt32(&b.Remaining, 1)
+		}()
 		r.buckets[key] = b
 
 		r.mutex.Unlock()
@@ -57,17 +43,15 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 	}
 	r.mutex.Unlock()
 
-	if time.Now().After(b.Reset) {
-		b.Reset = time.Now().Add(b.Rate)
-		b.Remaining = b.Capacity
-	}
-
-	if b.Remaining == 0 {
+	if atomic.LoadInt32(&b.Remaining) == 0 {
 		return errors.ErrBucketOverflow
 	}
 
-	b.Remaining--
-
+	atomic.AddInt32(&b.Remaining, -1)
+	go func() {
+		time.Sleep(rate)
+		atomic.AddInt32(&b.Remaining, 1)
+	}()
 	return nil
 }
 
@@ -79,18 +63,7 @@ func (r *MemoryBucketRepository) Reset(ctx context.Context, keys []string) error
 			continue
 		}
 
-		b.Remaining = b.Capacity
+		atomic.StoreInt32(&b.Remaining, int32(b.Capacity))
 	}
-	return nil
-}
-
-// CleanStorage us hard cleaning bucket storage
-func (r *MemoryBucketRepository) CleanStorage() error {
-	r.mutex.Lock()
-	for k := range r.buckets {
-		delete(r.buckets, k)
-	}
-	r.mutex.Unlock()
-
 	return nil
 }

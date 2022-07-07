@@ -2,10 +2,13 @@ package repository
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
-	"go.uber.org/zap"
+	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"go.uber.org/zap"
 )
 
 var memoryBucketRepository = NewMemoryBucketRepository(zap.NewNop())
@@ -42,7 +45,7 @@ func TestMemoryBucketRepository(t *testing.T) {
 				ctx:      context.Background(),
 				key:      "test",
 				capacity: 2,
-				rate:     0,
+				rate:     rate,
 			},
 			wantErr: false,
 		},
@@ -53,7 +56,7 @@ func TestMemoryBucketRepository(t *testing.T) {
 				ctx:      context.Background(),
 				key:      "test-another-key",
 				capacity: 2,
-				rate:     0,
+				rate:     rate,
 			},
 			wantErr: false,
 		},
@@ -64,7 +67,7 @@ func TestMemoryBucketRepository(t *testing.T) {
 				ctx:      context.Background(),
 				key:      "test",
 				capacity: 2,
-				rate:     0,
+				rate:     rate,
 			},
 			wantErr: true,
 		},
@@ -75,7 +78,7 @@ func TestMemoryBucketRepository(t *testing.T) {
 				ctx:      context.Background(),
 				key:      "test",
 				capacity: 2,
-				rate:     0,
+				rate:     rate,
 			},
 			wantErr: false,
 		},
@@ -118,9 +121,28 @@ func TestMemoryBucketRepository_Reset(t *testing.T) {
 
 			for _, key := range tt.args.keys {
 				if _, ok := memoryBucketRepository.buckets[key]; ok {
-					assert.Equal(t, memoryBucketRepository.buckets[key].Capacity, memoryBucketRepository.buckets[key].Remaining)
+					assert.Equal(t, memoryBucketRepository.buckets[key].Capacity, uint(atomic.LoadInt32(&memoryBucketRepository.buckets[key].Remaining)))
 				}
 			}
 		})
 	}
+}
+
+func TestMemoryBucketRepository_Add(t *testing.T) {
+	r := NewMemoryBucketRepository(zap.NewNop())
+	key := "test_key"
+
+	err := r.Add(context.Background(), key, 2, time.Second)
+	require.NoError(t, err)
+	err = r.Add(context.Background(), key, 2, time.Second)
+	require.NoError(t, err)
+	err = r.Add(context.Background(), key, 2, time.Second)
+	require.Error(t, err)
+	time.Sleep(1100 * time.Millisecond)
+	err = r.Add(context.Background(), key, 2, time.Second)
+	require.NoError(t, err)
+	err = r.Add(context.Background(), key, 2, time.Second)
+	require.NoError(t, err)
+	err = r.Add(context.Background(), key, 2, time.Second)
+	require.Error(t, err)
 }

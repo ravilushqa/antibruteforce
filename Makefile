@@ -11,7 +11,7 @@ precommit:
 	go mod verify
 
 test-unit:
-	go test -race -cover ./internal/bucket/...
+	go test -race -cover --count 1 ./internal/bucket/...
 
 test-integration:
 	docker-compose -f ${DOCKER_COMPOSE_TEST_FILE} up --build -d ;\
