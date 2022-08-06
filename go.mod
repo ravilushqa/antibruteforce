@@ -12,8 +12,7 @@ require (
 	github.com/jnewmano/grpc-json-proxy v0.0.6
 	github.com/lib/pq v1.10.6
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
-	github.com/prometheus/client_golang v1.12.2
-	github.com/prometheus/common v0.35.0 // indirect
+	github.com/prometheus/client_golang v1.13.0
 	github.com/spf13/cobra v1.5.0
 	github.com/spf13/viper v1.12.0
 	github.com/stretchr/testify v1.7.5
