@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"sync"
 	"sync/atomic"
 	"time"
 
@@ -15,7 +14,6 @@ import (
 // MemoryBucketRepository is implementation of bucket repository interface
 type MemoryBucketRepository struct {
 	buckets map[string]*models.Bucket
-	mutex   sync.Mutex
 	l       *zap.Logger
 }
 
@@ -27,7 +25,6 @@ func NewMemoryBucketRepository(logger *zap.Logger) *MemoryBucketRepository {
 
 // Add method is adding value to bucket, or creating it if its not created yet
 func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity uint, rate time.Duration) error {
-	r.mutex.Lock()
 	b, ok := r.buckets[key]
 	if !ok {
 		b = &models.Bucket{Capacity: capacity}
@@ -38,10 +35,8 @@ func (r *MemoryBucketRepository) Add(ctx context.Context, key string, capacity u
 		}()
 		r.buckets[key] = b
 
-		r.mutex.Unlock()
 		return nil
 	}
-	r.mutex.Unlock()
 
 	if atomic.LoadInt32(&b.Remaining) == 0 {
 		return errors.ErrBucketOverflow
