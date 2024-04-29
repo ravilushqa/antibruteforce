@@ -3,7 +3,7 @@ module github.com/ravilushqa/antibruteforce
 go 1.16
 
 require (
-	github.com/cucumber/godog v0.12.5
+	github.com/cucumber/godog v0.14.1
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0
@@ -12,9 +12,9 @@ require (
 	github.com/jnewmano/grpc-json-proxy v0.0.6
 	github.com/lib/pq v1.10.9
 	github.com/prometheus/client_golang v1.14.0
-	github.com/spf13/cobra v1.6.1
+	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.14.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/automaxprocs v1.5.1
 	go.uber.org/multierr v1.8.0 // indirect
